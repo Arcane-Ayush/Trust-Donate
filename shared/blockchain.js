@@ -12,6 +12,15 @@ export async function connectWallet() {
   if (!window.ethereum) throw new Error("MetaMask is not installed");
   provider = new ethers.BrowserProvider(window.ethereum);
   await provider.send('eth_requestAccounts', []);
+  
+  // Force network switch to Base Sepolia
+  try {
+    await provider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]); // 84532 in hex
+  } catch (switchError) {
+    // If the chain hasn't been added yet, you would ideally add it here.
+    console.error("Please manually switch your MetaMask to Base Sepolia (Chain ID: 84532)");
+  }
+
   signer = await provider.getSigner();
   contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
   ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });

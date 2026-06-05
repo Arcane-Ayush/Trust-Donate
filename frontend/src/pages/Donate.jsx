@@ -30,6 +30,7 @@ export default function Donate({ address }) {
       setTxHash(hash);
     } catch (err) {
       console.error(err);
+      alert("Donation failed: " + (err.message || err));
     } finally {
       setIsPending(false);
     }
