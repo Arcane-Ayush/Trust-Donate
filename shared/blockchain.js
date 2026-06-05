@@ -6,6 +6,8 @@ import { sha256 } from 'js-sha256';
 
 let provider, signer, contract, ugfClient;
 
+// shared/blockchain.js — written and maintained by Person 3
+
 export async function connectWallet() {
   if (!window.ethereum) throw new Error("MetaMask is not installed");
   provider = new ethers.BrowserProvider(window.ethereum);
