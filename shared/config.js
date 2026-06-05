@@ -1,6 +1,5 @@
 // shared/config.js
 
-// TBD: Update this with the real address after deployment
-export const CONTRACT_ADDRESS = "0x0000000000000000000000000000000000000000";
-export const ADMIN_WALLET = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+export const CONTRACT_ADDRESS = "0xe041C600056c4ac427cE9293aC43c7803e827C82";
+export const ADMIN_WALLET = "0xb59fB6E205BAe4a37822508F5ca9BF5c5baae8C9";
 export const CHAIN_ID = 84532; // Base Sepolia

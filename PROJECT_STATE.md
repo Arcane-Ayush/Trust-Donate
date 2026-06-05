@@ -1,9 +1,9 @@
 # PROJECT_STATE.md
 
 ## Contract
-- Address: 0x0000000000000000000000000000000000000000 (TBD after deploy)
+- Address: 0xe041C600056c4ac427cE9293aC43c7803e827C82
 - Network: Base Sepolia
-- Admin wallet: 0x0000000000000000000000000000000000000000 (TBD)
+- Admin wallet: 0xb59fB6E205BAe4a37822508F5ca9BF5c5baae8C9
 
 ## ABI
 - Location: shared/contractABI.json
@@ -30,7 +30,7 @@
 - [ ] recordExpense() wired through UGF
 
 ## Known issues / blockers
-- Blocked on real contract deployment until deployer wallet is funded on Base Sepolia. Mock values will be used for now to unblock Person 2 and Person 4.
+- None (Contract successfully deployed to Base Sepolia)
 
 ## Last updated by
-- Person 3 at initial setup
+- Person 3 (Contract Deployed) at 2026-06-05
