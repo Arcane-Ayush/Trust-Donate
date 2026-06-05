@@ -24,6 +24,14 @@ export async function connectWallet() {
   signer = await provider.getSigner();
   contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
   ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
+  
+  // Polyfill execute method for the hackathon demo
+  ugfClient.execute = async ({ to, data }) => {
+    const tx = await signer.sendTransaction({ to, data });
+    await tx.wait();
+    return tx;
+  };
+
   const address = await signer.getAddress();
   return { address, shortAddress: address.slice(0, 6) + '...' + address.slice(-4) };
 }
