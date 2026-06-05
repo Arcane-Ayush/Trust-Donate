@@ -1,41 +1,85 @@
-// shared/blockchain.js — written and maintained by Person 3 (implemented by Person 2 for now)
 import { ethers } from 'ethers';
+import { UGFClient } from '@tychilabs/ugf-testnet-js';
+import ABI from './contractABI.json' assert { type: "json" };
+import { CONTRACT_ADDRESS, CHAIN_ID } from './config.js';
+import { sha256 } from 'js-sha256';
 
-// Mock data for development
-const MOCK_DONATIONS = [
-  { donor: '0x1234...5678', amount: '500', category: 'Food', timestamp: Date.now() - 3600000 },
-  { donor: '0x5678...1234', amount: '200', category: 'Education', timestamp: Date.now() - 86400000 },
-];
+let provider, signer, contract, ugfClient;
+
+// shared/blockchain.js — written and maintained by Person 3
 
 export async function connectWallet() {
-  console.log("Connecting wallet...");
-  // Simulate delay
-  await new Promise(r => setTimeout(r, 500));
-  const address = '0xABCD1234567890abcdef1234567890ABCDEF1234';
-  return { 
-    address, 
-    shortAddress: address.slice(0,6)+'...'+address.slice(-4) 
-  };
+  if (!window.ethereum) throw new Error("MetaMask is not installed");
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send('eth_requestAccounts', []);
+  signer = await provider.getSigner();
+  contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+  ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
+  const address = await signer.getAddress();
+  return { address, shortAddress: address.slice(0, 6) + '...' + address.slice(-4) };
 }
 
 export async function donate(amount, category) {
-  console.log(`Donating ${amount} in category ${category}`);
-  await new Promise(r => setTimeout(r, 1000));
-  return '0x' + Math.random().toString(16).slice(2, 66);
+  if (!ugfClient || !contract) throw new Error("Wallet not connected");
+  // Route through UGF — user pays Mock USD not ETH
+  const tx = await ugfClient.execute({
+    to: CONTRACT_ADDRESS,
+    data: contract.interface.encodeFunctionData('donate', [amount, category]),
+  });
+  return tx.hash;
+}
+
+export async function computeInvoiceHash(file) {
+  const buffer = await file.arrayBuffer();
+  return '0x' + sha256(buffer);
+}
+
+export async function recordExpense(amount, category, invoiceHash) {
+  if (!ugfClient || !contract) throw new Error("Wallet not connected");
+  const tx = await ugfClient.execute({
+    to: CONTRACT_ADDRESS,
+    data: contract.interface.encodeFunctionData('recordExpense', [amount, category, invoiceHash]),
+  });
+  return tx.hash;
+}
+
+export async function flagExpense(expenseId) {
+  if (!contract) throw new Error("Wallet not connected");
+  // Flagging is not routed via UGF in the instructions, doing direct call
+  const tx = await contract.flagExpense(expenseId);
+  await tx.wait();
+  return tx.hash;
 }
 
 export async function getDonations() {
-  return MOCK_DONATIONS;
+  if (!contract) throw new Error("Wallet not connected");
+  const donations = await contract.getDonations();
+  return donations.map(d => ({
+    donor: d.donor,
+    amount: d.amount.toString(),
+    category: d.category,
+    timestamp: Number(d.timestamp) * 1000 // Convert to JS ms
+  }));
+}
+
+export async function getExpenses() {
+  if (!contract) throw new Error("Wallet not connected");
+  const expenses = await contract.getExpenses();
+  return expenses.map(e => ({
+    amount: e.amount.toString(),
+    category: e.category,
+    invoiceHash: e.invoiceHash,
+    timestamp: Number(e.timestamp) * 1000,
+    flagged: e.flagged
+  }));
 }
 
 export async function getTotals() {
-  return { 
-    totalDonated: 700, 
-    totalSpent: 400, 
-    remaining: 300 
+  if (!contract) throw new Error("Wallet not connected");
+  const totals = await contract.getTotals();
+  return {
+    totalDonated: totals.totalDonated.toString(),
+    totalSpent: totals.totalSpent.toString(),
+    remaining: totals.remaining.toString()
   };
-}
-
-export function computeInvoiceHash(file) {
-  return '0x' + Math.random().toString(16).slice(2, 66);
 }
