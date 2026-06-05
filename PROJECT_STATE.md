@@ -21,8 +21,8 @@
 - [x] Landing             (Person 2) - Updated with official pitch and navigation
 - [x] Donate              (Person 2) - Added UGF balance display
 - [x] UserDashboard       (Person 2) - Added community fund note and wallet identity
-- [ ] NGODashboard        (Person 4)
-- [ ] PublicDashboard     (Person 4)
+- [x] NGODashboard        (Person 4)
+- [x] PublicDashboard     (Person 4)
 
 ## UGF integration
 - [x] Mock UGF balance displayed
@@ -36,3 +36,4 @@
 ## Last updated by
 - Person 3 (Contract Deployed) at 2026-06-05
 - Person 2 (Frontend setup) at 2026-06-05
+- Person 4 (Dashboard setup) at 2026-06-05
