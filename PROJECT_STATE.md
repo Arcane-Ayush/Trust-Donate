@@ -21,8 +21,8 @@
 - [ ] Landing             (Person 2)
 - [ ] Donate              (Person 2)
 - [ ] UserDashboard       (Person 2)
-- [ ] NGODashboard        (Person 4)
-- [ ] PublicDashboard     (Person 4)
+- [x] NGODashboard        (Person 4)
+- [x] PublicDashboard     (Person 4)
 
 ## UGF integration
 - [ ] SDK installed
@@ -33,4 +33,4 @@
 - Blocked on real contract deployment until deployer wallet is funded on Base Sepolia. Mock values will be used for now to unblock Person 2 and Person 4.
 
 ## Last updated by
-- Person 3 at initial setup
+- Person 4 at current time
