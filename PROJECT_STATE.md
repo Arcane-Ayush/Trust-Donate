@@ -26,9 +26,9 @@
 
 ## UGF integration
 - [x] Mock UGF balance displayed
-- [ ] SDK installed
-- [ ] donate() wired through UGF
-- [ ] recordExpense() wired through UGF
+- [x] SDK installed
+- [x] donate() wired through UGF
+- [x] recordExpense() wired through UGF
 
 ## Known issues / blockers
 - None (Contract successfully deployed to Base Sepolia)
