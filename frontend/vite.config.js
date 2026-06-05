@@ -8,6 +8,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, '../shared'),
+      '@tychilabs/ugf-testnet-js': path.resolve(__dirname, 'node_modules/@tychilabs/ugf-testnet-js'),
+      'ethers': path.resolve(__dirname, 'node_modules/ethers'),
+      'js-sha256': path.resolve(__dirname, 'node_modules/js-sha256'),
     },
   },
   server: {
