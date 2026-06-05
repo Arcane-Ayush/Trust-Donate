@@ -25,25 +25,33 @@ export async function connectWallet() {
   contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
   ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
   
-  // Polyfill execute method for the hackathon demo
-  ugfClient.execute = async ({ to, data }) => {
-    const tx = await signer.sendTransaction({ to, data });
-    await tx.wait();
-    return tx;
-  };
-
   const address = await signer.getAddress();
   return { address, shortAddress: address.slice(0, 6) + '...' + address.slice(-4) };
 }
 
 export async function donate(amount, category) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
-  // Route through UGF — user pays Mock USD not ETH
-  const tx = await ugfClient.execute({
-    to: CONTRACT_ADDRESS,
-    data: contract.interface.encodeFunctionData('donate', [amount, category]),
+  
+  // 1. Login to UGF
+  await ugfClient.auth.login(signer);
+  
+  // 2. Get Sponsorship Quote
+  const quote = await ugfClient.quote.get({
+    payment_amount: 1, // Mock USD amount
+    payment_to: CONTRACT_ADDRESS
   });
-  return tx.hash;
+  
+  // 3. Sponsor Gas and Execute User Tx
+  const result = await ugfClient.chains.evm.sponsorAndExecute(
+    quote.digest,
+    signer,
+    async () => ({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('donate', [amount, category])
+    })
+  );
+  
+  return result.userTxHash;
 }
 
 export async function computeInvoiceHash(file) {
@@ -53,11 +61,27 @@ export async function computeInvoiceHash(file) {
 
 export async function recordExpense(amount, category, invoiceHash) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
-  const tx = await ugfClient.execute({
-    to: CONTRACT_ADDRESS,
-    data: contract.interface.encodeFunctionData('recordExpense', [amount, category, invoiceHash]),
+  
+  // 1. Login to UGF
+  await ugfClient.auth.login(signer);
+  
+  // 2. Get Sponsorship Quote
+  const quote = await ugfClient.quote.get({
+    payment_amount: 1,
+    payment_to: CONTRACT_ADDRESS
   });
-  return tx.hash;
+  
+  // 3. Sponsor Gas and Execute User Tx
+  const result = await ugfClient.chains.evm.sponsorAndExecute(
+    quote.digest,
+    signer,
+    async () => ({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('recordExpense', [amount, category, invoiceHash])
+    })
+  );
+  
+  return result.userTxHash;
 }
 
 export async function flagExpense(expenseId) {
