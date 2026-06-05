@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Landing from './pages/Landing';
 import Donate from './pages/Donate';
 import UserDashboard from './pages/UserDashboard';
+import PublicDashboard from './pages/PublicDashboard';
+import NGODashboard from './pages/NGODashboard';
 import { connectWallet } from '@shared/blockchain.js';
 import { Shield, Home, Heart, User, X, Menu, ArrowUpRight } from 'lucide-react';
 import WalletButton from './components/WalletButton';
@@ -33,6 +35,10 @@ function App() {
         return <Donate address={address} />;
       case 'dashboard':
         return <UserDashboard address={address} />;
+      case 'public':
+        return <PublicDashboard />;
+      case 'ngo':
+        return <NGODashboard />;
       default:
         return <Landing address={address} onConnect={handleConnect} isLoading={isLoading} setPage={setCurrentPage} />;
     }
@@ -72,6 +78,18 @@ function App() {
                 className={`text-[10px] font-bold tracking-[0.2em] uppercase transition-colors ${currentPage === 'dashboard' ? 'text-[#5E0ED7]' : 'text-black/40 hover:text-black'}`}
               >
                 Impact
+              </button>
+              <button 
+                onClick={() => setCurrentPage('public')}
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase transition-colors ${currentPage === 'public' ? 'text-[#5E0ED7]' : 'text-black/40 hover:text-black'}`}
+              >
+                Transparency
+              </button>
+              <button 
+                onClick={() => setCurrentPage('ngo')}
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase transition-colors ${currentPage === 'ngo' ? 'text-[#5E0ED7]' : 'text-black/40 hover:text-black'}`}
+              >
+                NGO Portal
               </button>
             </nav>
 
@@ -128,6 +146,18 @@ function App() {
                 className="text-4xl font-semibold tracking-widest uppercase text-left"
               >
                 Impact
+              </button>
+              <button 
+                onClick={() => { setCurrentPage('public'); setIsMenuOpen(false); }}
+                className="text-4xl font-semibold tracking-widest uppercase text-left"
+              >
+                Transparency
+              </button>
+              <button 
+                onClick={() => { setCurrentPage('ngo'); setIsMenuOpen(false); }}
+                className="text-4xl font-semibold tracking-widest uppercase text-left"
+              >
+                NGO Portal
               </button>
             </div>
 
