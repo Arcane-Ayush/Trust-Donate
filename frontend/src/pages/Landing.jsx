@@ -140,7 +140,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
         <div className="relative z-10 flex-1 flex flex-col pt-12 md:pt-0">
           {/* Stats Row */}
           <div className="flex-1 flex items-center justify-end px-5 sm:px-8 md:px-12">
-            <div className="flex items-center gap-8 sm:gap-12 md:gap-16">
+            <div className="flex items-center gap-4 sm:gap-12 md:gap-16 justify-between sm:justify-end w-full sm:w-auto">
               {STATS.map((stat, i) => (
                 <motion.div 
                   key={stat.label}
@@ -148,8 +148,8 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                   className="text-right"
                 >
                   <div className="flex items-start justify-end">
-                    <span className="text-[#5E0ED7] font-semibold mt-1 mr-1" style={{ fontSize: 'clamp(0.8rem, 2vw, 1.5rem)' }}>+</span>
-                    <span className="font-semibold tracking-tight" style={{ fontSize: 'clamp(1.8rem, 6vw, 4.5rem)', lineHeight: 1 }}>{stat.value}</span>
+                    <span className="text-[#5E0ED7] font-semibold mt-1 mr-1 text-sm sm:text-xl md:text-2xl">+</span>
+                    <span className="font-semibold tracking-tight leading-none text-2xl sm:text-4xl md:text-6xl lg:text-7xl">{stat.value}</span>
                   </div>
                   <p className="text-[9px] sm:text-xs md:text-sm font-semibold tracking-[0.2em] uppercase whitespace-pre-line leading-tight mt-2 opacity-60">
                     {stat.label}
@@ -199,8 +199,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                       initial="hidden"
                       animate="visible"
                       variants={headingSlideUp}
-                      className="block font-semibold uppercase leading-[0.88] text-right"
-                      style={{ fontSize: 'clamp(2.2rem, 10vw, 10rem)' }}
+                      className="block font-semibold uppercase leading-[0.88] text-right text-4xl sm:text-6xl md:text-8xl lg:text-[10rem]"
                     >
                       {word}
                     </motion.span>

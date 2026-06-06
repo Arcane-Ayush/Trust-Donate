@@ -70,15 +70,15 @@ export default function Donate({ address }) {
 
   return (
     <div className="max-w-4xl mx-auto mt-12 px-6 pb-24 text-black font-body">
-      <div className="flex flex-col md:flex-row gap-16 md:gap-24">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-24">
         {/* Left Col: Info */}
-        <div className="flex-1 space-y-12">
+        <div className="flex-1 space-y-8 md:space-y-12">
           <motion.div custom={0} initial="hidden" animate="visible" variants={fadeUp}>
             <div className="w-12 h-12 rounded-full border-2 border-[#5E0ED7] flex items-center justify-center mb-8">
               <Heart className="w-6 h-6 text-[#5E0ED7]" />
             </div>
-            <h1 className="text-6xl font-semibold tracking-widest uppercase leading-[0.9]">
-              Support<br />The<br />Cause
+            <h1 className="text-5xl sm:text-6xl font-semibold tracking-widest uppercase leading-[0.9]">
+              Support<br className="hidden sm:block" /> The<br className="hidden sm:block" /> Cause
             </h1>
           </motion.div>
 
@@ -106,7 +106,7 @@ export default function Donate({ address }) {
 
         {/* Right Col: Form */}
         <div className="flex-1">
-          <form onSubmit={handleDonate} className="space-y-16">
+          <form onSubmit={handleDonate} className="space-y-10 md:space-y-16">
             <motion.div custom={3} initial="hidden" animate="visible" variants={fadeUp} className="space-y-4">
               <label className="text-[10px] font-bold tracking-[0.3em] opacity-40 uppercase">Select Amount</label>
               <div className="relative group">
