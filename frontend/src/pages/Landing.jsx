@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, X, ShieldAlert, Lock, Eye, Zap, Database, Globe } from 'lucide-react';
+import { ArrowUpRight, X, ShieldAlert, Lock, Eye, Zap, Database, Globe, AlertTriangle } from 'lucide-react';
 import WalletButton from '../components/WalletButton';
+import { useUGFFallback, setUGFFallback } from '../../../shared/blockchain.js';
 
 const NAV_LINKS = [
   { name: 'Public Audit', id: 'dashboard' },
-  { name: 'Transparency', id: 'landing' },
+  { name: 'Transparency', id: 'public' },
   { name: 'Donate', id: 'donate' }
 ];
 
@@ -61,6 +62,13 @@ const FRAUD_LAYERS = [
 
 export default function Landing({ address, onConnect, isLoading, setPage }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [ugfFallback, setUgfFallback] = useState(useUGFFallback);
+
+  const togglePolyfix = () => {
+    const newVal = !ugfFallback;
+    setUgfFallback(newVal);
+    setUGFFallback(newVal);
+  };
 
   return (
     <div className="relative flex flex-col w-full bg-white text-black font-body overflow-x-hidden">
@@ -95,7 +103,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               <motion.button
                 key={link.name}
                 custom={i + 1} initial="hidden" animate="visible" variants={fadeDown}
-                onClick={() => handleNavClick(link.id)}
+                onClick={() => setPage(link.id)}
                 className="text-[13px] font-black tracking-[0.4em] uppercase text-black hover:text-[#5E0ED7] transition-all drop-shadow-[0_2px_8px_rgba(255,255,255,1)] drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]"
               >
                 {link.name}
@@ -103,8 +111,18 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
             ))}
           </div>
 
-          <motion.div custom={5} initial="hidden" animate="visible" variants={fadeDown} className="flex items-center gap-8">
-            <div className="scale-95 origin-right shadow-2xl">
+          <motion.div custom={5} initial="hidden" animate="visible" variants={fadeDown} className="flex items-center gap-4 sm:gap-8">
+            <button 
+              onClick={togglePolyfix}
+              title="Use it when UGF is down"
+              className={`relative group p-2 rounded-full border-2 transition-all ${ugfFallback ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-200 text-zinc-400 hover:text-black hover:border-black shadow-sm bg-white/50 backdrop-blur'}`}
+            >
+              <AlertTriangle className="w-5 h-5" />
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest uppercase bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                {ugfFallback ? 'UGF Bypassed' : 'Bypass UGF'}
+              </span>
+            </button>
+            <div className="scale-95 origin-right shadow-2xl hidden sm:block">
               <WalletButton address={address} onConnect={onConnect} isLoading={isLoading} />
             </div>
             <button 

@@ -5,6 +5,11 @@ import { CONTRACT_ADDRESS, CHAIN_ID } from './config.js';
 import { sha256 } from 'js-sha256';
 
 let provider, signer, contract, ugfClient;
+export let useUGFFallback = false;
+
+export function setUGFFallback(val) {
+  useUGFFallback = val;
+}
 
 // shared/blockchain.js — written and maintained by Person 3
 
@@ -45,6 +50,14 @@ export async function connectWallet() {
 export async function donate(amount, category) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
   
+  if (useUGFFallback) {
+    const tx = await signer.sendTransaction({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('donate', [amount, category])
+    });
+    return tx.hash;
+  }
+
   // 1. Login to UGF
   await ugfClient.auth.login(signer);
   
@@ -83,6 +96,14 @@ export async function computeInvoiceHash(file) {
 export async function recordExpense(amount, category, invoiceHash) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
   
+  if (useUGFFallback) {
+    const tx = await signer.sendTransaction({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('recordExpense', [amount, category, invoiceHash])
+    });
+    return tx.hash;
+  }
+
   // 1. Login to UGF
   await ugfClient.auth.login(signer);
   

@@ -4,8 +4,8 @@ import Donate from './pages/Donate';
 import UserDashboard from './pages/UserDashboard';
 import PublicDashboard from './pages/PublicDashboard';
 import NGODashboard from './pages/NGODashboard';
-import { connectWallet } from '@shared/blockchain.js';
-import { Shield, Home, Heart, User, X, Menu, ArrowUpRight } from 'lucide-react';
+import { connectWallet, useUGFFallback, setUGFFallback } from '@shared/blockchain.js';
+import { Shield, Home, Heart, User, X, Menu, ArrowUpRight, AlertTriangle } from 'lucide-react';
 import WalletButton from './components/WalletButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,6 +14,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState('landing');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [ugfFallback, setUgfFallback] = useState(useUGFFallback);
+
+  const togglePolyfix = () => {
+    const newVal = !ugfFallback;
+    setUgfFallback(newVal);
+    setUGFFallback(newVal);
+  };
 
   const handleConnect = async () => {
     setIsLoading(true);
@@ -94,6 +101,16 @@ function App() {
             </nav>
 
             <div className="flex items-center gap-4">
+              <button 
+                onClick={togglePolyfix}
+                title="Use it when UGF is down"
+                className={`relative group p-2 rounded-full border-2 transition-all ${ugfFallback ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-200 text-zinc-400 hover:text-black hover:border-black'}`}
+              >
+                <AlertTriangle className="w-5 h-5" />
+                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-widest uppercase bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  {ugfFallback ? 'UGF Bypassed' : 'Bypass UGF'}
+                </span>
+              </button>
               <WalletButton address={address} onConnect={handleConnect} isLoading={isLoading} />
               <button 
                 className="md:hidden w-9 h-9 rounded-full bg-black flex items-center justify-center"

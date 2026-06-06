@@ -26,7 +26,20 @@ async function run() {
       })
     });
     
-    console.log("Quote:", quote);
+    console.log("Quote received. Executing vault payment...");
+    await ugfClient.payment.vault.payAndSubmit(quote, signer, "84532", "TYI_MOCK_USD");
+    console.log("Vault Payment executed!");
+    
+    console.log("Sponsoring and executing...");
+    const result = await ugfClient.chains.evm.sponsorAndExecute(
+      quote.digest,
+      signer,
+      async () => ({
+        to: "0xe041C600056c4ac427cE9293aC43c7803e827C82",
+        data: contract.interface.encodeFunctionData('donate', [100, "Food"])
+      })
+    );
+    console.log("Success:", result);
   } catch (err) {
     console.error("ERROR:", err);
   }
