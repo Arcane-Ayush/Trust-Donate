@@ -194,11 +194,13 @@ function App() {
         {renderPage()}
       </main>
 
-      <footer className="py-12 border-t border-zinc-100 text-center relative z-10">
-        <p className="text-[10px] font-bold tracking-[0.2em] text-black/40 uppercase">
-          BUILT FOR THE BASE HACKATHON 2026 &nbsp;·&nbsp; POWERED BY UGF &amp; BASE SEPOLIA
-        </p>
-      </footer>
+      {currentPage !== 'landing' && (
+        <footer className="py-12 border-t border-zinc-100 text-center relative z-10">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-black/40 uppercase">
+            BUILT FOR THE BASE HACKATHON 2026 &nbsp;·&nbsp; POWERED BY UGF &amp; BASE SEPOLIA
+          </p>
+        </footer>
+      )}
     </div>
   );
 }

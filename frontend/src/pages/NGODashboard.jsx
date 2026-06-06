@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import StatsPanel from '../components/StatsPanel';
 import ExpenseCard from '../components/ExpenseCard';
 import { getTotals, getExpenses, computeInvoiceHash, recordExpense, flagExpense } from '../../../shared/blockchain.js';
@@ -69,9 +70,15 @@ const NGODashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans p-8">
+    <motion.div 
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
+      className="min-h-screen bg-slate-950 text-white font-sans p-8"
+    >
       <div className="max-w-6xl mx-auto">
-        <header className="mb-8">
+        <motion.header 
+          initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-8"
+        >
           <div className="flex justify-between items-end mb-2">
             <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
               NGO Admin Dashboard
@@ -81,14 +88,19 @@ const NGODashboard = () => {
             </span>
           </div>
           <p className="text-gray-400">Manage community funds and securely commit invoice proofs on-chain.</p>
-        </header>
+        </motion.header>
 
-        <StatsPanel {...totals} />
+        <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
+          <StatsPanel {...totals} />
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
           
           {/* Form Column */}
-          <div className="lg:col-span-1">
+          <motion.div 
+            initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="lg:col-span-1"
+          >
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-2xl">
               <h2 className="text-xl font-bold mb-6 border-b border-white/10 pb-3">Record New Expense</h2>
               <form onSubmit={handleRecordExpense} className="space-y-5">
@@ -145,10 +157,13 @@ const NGODashboard = () => {
                 </button>
               </form>
             </div>
-          </div>
+          </motion.div>
 
           {/* History Column */}
-          <div className="lg:col-span-2">
+          <motion.div 
+            initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}
+            className="lg:col-span-2"
+          >
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-2xl h-full">
               <h2 className="text-xl font-bold mb-6 border-b border-white/10 pb-3">Expense History</h2>
               
@@ -161,23 +176,31 @@ const NGODashboard = () => {
                   {expenses.length === 0 ? (
                     <p className="text-gray-500 text-center py-8">No expenses recorded yet.</p>
                   ) : (
-                    expenses.map((expense, idx) => (
-                      <ExpenseCard 
-                        key={idx} 
-                        expense={expense} 
-                        expenseId={expenses.length - 1 - idx} // Reverse calculating ID for simple display
-                        onFlag={handleFlagExpense} 
-                      />
-                    ))
+                    <AnimatePresence>
+                      {expenses.map((expense, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 + (idx * 0.1) }}
+                        >
+                          <ExpenseCard 
+                            expense={expense} 
+                            expenseId={expenses.length - 1 - idx} // Reverse calculating ID for simple display
+                            onFlag={handleFlagExpense} 
+                          />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   )}
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
