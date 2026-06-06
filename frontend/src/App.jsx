@@ -71,14 +71,14 @@ function App() {
       {currentPage !== 'landing' && (
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
           <div className="max-w-[1280px] mx-auto px-5 sm:px-8 md:px-12 py-5 flex justify-between items-center">
-            <div 
-              className="flex items-center gap-2 cursor-pointer group" 
-              onClick={() => setCurrentPage('landing')}
-            >
+            <div className="flex items-center gap-4 cursor-pointer group" onClick={() => setCurrentPage('landing')}>
               <div className="w-8 h-8 rounded-full border-2 border-[#5E0ED7] flex items-center justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#5E0ED7]" />
               </div>
-              <span className="text-xl font-bold tracking-tight uppercase italic hidden sm:block">TrustDonate</span>
+              <span className="text-xl font-bold tracking-[0.2em] uppercase italic hidden sm:block">TrustDonate</span>
+              <a href="/V2_ARCHITECTURE.md" target="_blank" className="hidden sm:flex items-center text-[9px] font-bold tracking-widest text-[#5E0ED7] bg-[#5E0ED7]/10 px-2 py-0.5 rounded-full border border-[#5E0ED7]/20 uppercase">
+                BETA / V2 INCOMING
+              </a>
             </div>
             
             <nav className="hidden md:flex items-center gap-12">
@@ -209,10 +209,13 @@ function App() {
       </main>
 
       {currentPage !== 'landing' && (
-        <footer className="py-12 border-t border-zinc-100 text-center relative z-10">
+        <footer className="py-12 border-t border-zinc-100 text-center relative z-10 flex flex-col items-center gap-3">
           <p className="text-[10px] font-bold tracking-[0.2em] text-black/40 uppercase">
             BUILT FOR THE BASE HACKATHON 2026 &nbsp;·&nbsp; POWERED BY UGF &amp; BASE SEPOLIA
           </p>
+          <a href="https://github.com/Arcane-Ayush/Trust-Donate/blob/main/V2_ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-widest uppercase text-[#5E0ED7] hover:opacity-70 transition-opacity">
+            View V2 Architecture Roadmap ↗
+          </a>
         </footer>
       )}
 

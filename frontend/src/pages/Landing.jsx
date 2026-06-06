@@ -87,15 +87,18 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
 
         {/* Navigation */}
         <nav className="sticky top-0 z-50 flex items-center justify-between px-5 sm:px-8 md:px-12 py-8 bg-transparent transition-all border-none">
-          <motion.div 
+          <motion.div
             custom={0} initial="hidden" animate="visible" variants={fadeDown}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-4 cursor-pointer group"
             onClick={() => setPage('landing')}
           >
             <div className="w-8 h-8 rounded-full border-2 border-[#5E0ED7] flex items-center justify-center transition-transform group-hover:rotate-12 bg-white/10 shadow-[0_0_20px_rgba(94,14,215,0.4)]">
               <div className="w-2.5 h-2.5 rounded-full bg-[#5E0ED7] shadow-[0_0_10px_#5E0ED7]" />
             </div>
             <span className="text-[15px] font-black tracking-[0.35em] uppercase italic hidden sm:block text-black drop-shadow-[0_2px_8px_rgba(255,255,255,1)] drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">TrustDonate</span>
+            <a href="/V2_ARCHITECTURE.md" target="_blank" className="hidden lg:flex items-center text-[8px] font-black tracking-widest text-[#5E0ED7] bg-[#5E0ED7]/10 px-2 py-0.5 rounded-full border border-[#5E0ED7]/20 uppercase ml-2 hover:bg-[#5E0ED7]/20 transition-colors">
+              BETA / V2 INCOMING
+            </a>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-14">
@@ -112,7 +115,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
           </div>
 
           <motion.div custom={5} initial="hidden" animate="visible" variants={fadeDown} className="flex items-center gap-4 sm:gap-8">
-            <button 
+            <button
               onClick={togglePolyfix}
               title="Use it when UGF is down"
               className={`relative group p-2 rounded-full border-2 transition-all ${ugfFallback ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-zinc-200 text-zinc-400 hover:text-black hover:border-black shadow-sm bg-white/50 backdrop-blur'}`}
@@ -125,7 +128,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
             <div className="scale-95 origin-right shadow-2xl hidden sm:block">
               <WalletButton address={address} onConnect={onConnect} isLoading={isLoading} />
             </div>
-            <button 
+            <button
               className="w-11 h-11 rounded-full bg-black flex flex-col items-center justify-center gap-1.5 group transition-transform active:scale-90 shadow-[0_8px_20px_rgba(0,0,0,0.3)] hover:bg-[#5E0ED7]"
               onClick={() => setIsMenuOpen(true)}
             >
@@ -142,7 +145,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
           <div className="flex-1 flex items-center justify-end px-5 sm:px-8 md:px-12">
             <div className="flex items-center gap-4 sm:gap-12 md:gap-16 justify-between sm:justify-end w-full sm:w-auto">
               {STATS.map((stat, i) => (
-                <motion.div 
+                <motion.div
                   key={stat.label}
                   custom={i + 2} initial="hidden" animate="visible" variants={fadeUp}
                   className="text-right"
@@ -162,7 +165,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
           {/* Bottom Hero */}
           <div className="px-5 sm:px-8 md:px-12 pb-8 md:pb-12 flex flex-col gap-8 md:gap-16">
             <div className="flex items-center justify-between gap-4">
-              <motion.p 
+              <motion.p
                 custom={5} initial="hidden" animate="visible" variants={fadeUp}
                 className="text-[10px] sm:text-xs md:text-sm font-semibold tracking-widest max-w-[140px] sm:max-w-[200px] md:max-w-xs leading-relaxed"
               >
@@ -170,18 +173,18 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                 PAYMENTS, ADDING<br />
                 ACCOUNTABILITY
               </motion.p>
-              <motion.button 
+              <motion.button
                 custom={6} initial="hidden" animate="visible" variants={fadeUp}
                 onClick={() => setPage && setPage('donate')}
-                className="group flex items-center gap-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm tracking-[0.2em] uppercase py-4 px-8 rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 transform hover:scale-105"
+                className="group flex items-center gap-2 md:gap-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-black text-xs md:text-sm tracking-[0.2em] md:tracking-[0.25em] uppercase py-3 px-5 md:py-4 md:px-8 rounded-xl md:rounded-2xl rounded-tl-none rounded-br-none shadow-[0_0_20px_rgba(94,14,215,0.3)] transition-all duration-300 transform hover:scale-105"
               >
                 START DONATING
-                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-45" />
+                <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:rotate-45" />
               </motion.button>
             </div>
 
             <div className="flex flex-col-reverse md:flex-row items-start md:items-end justify-between gap-8 md:gap-4 mt-8 md:mt-0">
-              <motion.div 
+              <motion.div
                 custom={7} initial="hidden" animate="visible" variants={fadeUp}
                 className="w-[120px] sm:w-[200px] md:w-[320px] shrink-0"
               >
@@ -213,7 +216,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
 
       {/* SECTION 2: THE PROBLEM / INSIGHT */}
       <section className="relative bg-black text-white px-5 sm:px-8 md:px-12 py-32 md:py-48 flex flex-col gap-20">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -228,7 +231,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
         </motion.div>
 
         <div className="flex flex-col md:flex-row justify-between gap-12 items-start">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -238,8 +241,8 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               WE ARE NOT A PAYMENT GATEWAY. WE ARE AN IMMUTABLE PUBLIC AUDIT LAYER. TRUSTDONATE ENSURES THAT EVERY COMMITMENT IS PERMANENT, VISIBLE, AND PROTECTED BY THE CRYPTOGRAPHIC RIGOR OF BASE SEPOLIA.
             </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -267,7 +270,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-20">
           {FRAUD_LAYERS.map((layer, i) => (
-            <motion.div 
+            <motion.div
               key={layer.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -293,7 +296,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
       <section className="relative bg-[#5E0ED7] text-white px-5 sm:px-8 md:px-12 py-32 overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-16">
           <div className="max-w-2xl space-y-12">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -305,7 +308,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
             <p className="text-sm md:text-xl tracking-[0.15em] leading-relaxed uppercase opacity-80">
               POWERED BY THE UNIVERSAL GAS FRAMEWORK (UGF). PAY WITH MOCK USD, NEVER WORRY ABOUT ETH FOR GAS FEES. WEB2 CONVENIENCE MEETS WEB3 SECURITY.
             </p>
-            <button 
+            <button
               onClick={() => setPage('donate')}
               className="px-10 py-5 bg-white text-[#5E0ED7] text-lg font-bold tracking-widest uppercase hover:bg-zinc-100 transition-colors"
             >
@@ -313,7 +316,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
             </button>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
@@ -340,13 +343,18 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
           <span className="text-sm font-bold tracking-[0.2em] uppercase italic">TrustDonate</span>
         </div>
 
-        <p className="text-[10px] font-bold tracking-[0.2em] opacity-40 uppercase text-center md:text-left">
-          BUILT FOR THE BASE HACKATHON 2026 &nbsp;·&nbsp; POWERED BY UGF &amp; BASE SEPOLIA
-        </p>
+        <div className="flex flex-col md:items-start gap-3">
+          <p className="text-[10px] font-bold tracking-[0.2em] opacity-40 uppercase text-center md:text-left">
+            BUILT FOR THE BASE HACKATHON 2026 &nbsp;·&nbsp; POWERED BY UGF &amp; BASE SEPOLIA
+          </p>
+          <a href="https://github.com/Arcane-Ayush/Trust-Donate/blob/main/V2_ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-widest uppercase text-[#5E0ED7] hover:opacity-70 transition-opacity w-full text-center md:text-left">
+            View V2 Architecture Roadmap ↗
+          </a>
+        </div>
 
         <div className="flex items-center gap-8">
-          <button className="text-[10px] font-bold tracking-widest uppercase hover:text-[#5E0ED7] transition-colors">Twitter</button>
-          <button className="text-[10px] font-bold tracking-widest uppercase hover:text-[#5E0ED7] transition-colors">GitHub</button>
+          <a href="https://instagram.com/arcane_ayush" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-widest uppercase hover:text-[#5E0ED7] transition-colors">Instagram</a>
+          <a href="https://github.com/Arcane-Ayush/Trust-Donate" target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold tracking-widest uppercase hover:text-[#5E0ED7] transition-colors">GitHub</a>
         </div>
       </footer>
 
@@ -364,7 +372,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               <div className="w-8 h-8 rounded-full border-2 border-[#5E0ED7] flex items-center justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#5E0ED7]" />
               </div>
-              <button 
+              <button
                 className="w-9 h-9 rounded-full bg-black flex items-center justify-center"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -387,7 +395,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               ))}
             </div>
 
-            <button 
+            <button
               onClick={() => { setPage('donate'); setIsMenuOpen(false); }}
               className="mt-auto flex items-center justify-between text-2xl font-semibold tracking-widest uppercase text-[#5E0ED7] pb-8 border-b border-zinc-100"
             >

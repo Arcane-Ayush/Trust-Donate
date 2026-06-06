@@ -16,7 +16,7 @@ const fadeUp = {
   })
 };
 
-export default function Donate({ address }) {
+export default function Donate({ address, setPage }) {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('FOOD');
   const [isPending, setIsPending] = useState(false);
@@ -65,13 +65,21 @@ export default function Donate({ address }) {
             <p className="text-xs font-mono break-all bg-zinc-50 p-4 border border-zinc-100">{txHash}</p>
           </div>
           
-          <button 
-            onClick={() => { setTxHash(null); setAmount(''); }}
-            className="flex items-center gap-3 text-xl font-semibold tracking-widest uppercase text-[#5E0ED7]"
-          >
-            New Donation
-            <ArrowUpRight className="w-6 h-6" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+            <button 
+              onClick={() => setPage && setPage('dashboard')}
+              className="flex items-center gap-3 bg-[#5E0ED7] text-white px-6 py-3 font-semibold tracking-widest uppercase transition-transform hover:scale-105"
+            >
+              View Impact
+              <ArrowUpRight className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => { setTxHash(null); setAmount(''); }}
+              className="flex items-center gap-3 text-sm font-semibold tracking-widest uppercase text-black/40 hover:text-[#5E0ED7] transition-colors"
+            >
+              New Donation
+            </button>
+          </div>
         </motion.div>
       </div>
     );
