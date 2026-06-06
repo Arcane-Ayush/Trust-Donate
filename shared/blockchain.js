@@ -13,12 +13,25 @@ export async function connectWallet() {
   provider = new ethers.BrowserProvider(window.ethereum);
   await provider.send('eth_requestAccounts', []);
   
-  // Force network switch to Base Sepolia
+  // Force network switch or add to Base Sepolia
   try {
     await provider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]); // 84532 in hex
   } catch (switchError) {
-    // If the chain hasn't been added yet, you would ideally add it here.
-    console.error("Please manually switch your MetaMask to Base Sepolia (Chain ID: 84532)");
+    if (switchError.code === 4902 || switchError?.info?.error?.code === 4902 || switchError?.data?.originalError?.code === 4902) {
+      try {
+        await provider.send('wallet_addEthereumChain', [{
+          chainId: '0x14a34',
+          chainName: 'Base Sepolia Testnet',
+          rpcUrls: ['https://sepolia.base.org'],
+          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+          blockExplorerUrls: ['https://sepolia.basescan.org']
+        }]);
+      } catch (addError) {
+        console.error("Failed to add Base Sepolia:", addError);
+      }
+    } else {
+      console.error("Please manually switch your MetaMask to Base Sepolia (Chain ID: 84532)");
+    }
   }
 
   signer = await provider.getSigner();
@@ -46,7 +59,10 @@ export async function donate(amount, category) {
     })
   });
   
-  // 3. Sponsor Gas and Execute User Tx
+  // 3. Authorize Mock USD Payment (Gasless Signature)
+  await ugfClient.payment.x402.execute({ quote, signer });
+  
+  // 4. Sponsor Gas and Execute User Tx
   const result = await ugfClient.chains.evm.sponsorAndExecute(
     quote.digest,
     signer,
@@ -81,7 +97,10 @@ export async function recordExpense(amount, category, invoiceHash) {
     })
   });
   
-  // 3. Sponsor Gas and Execute User Tx
+  // 3. Authorize Mock USD Payment (Gasless Signature)
+  await ugfClient.payment.x402.execute({ quote, signer });
+  
+  // 4. Sponsor Gas and Execute User Tx
   const result = await ugfClient.chains.evm.sponsorAndExecute(
     quote.digest,
     signer,
