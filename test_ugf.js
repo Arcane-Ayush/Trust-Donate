@@ -26,8 +26,8 @@ async function run() {
       })
     });
     
-    console.log("Quote received. Executing vault payment...");
-    await ugfClient.payment.vault.payAndSubmit(quote, signer, "84532", "TYI_MOCK_USD");
+    console.log("Quote received. Executing x402 payment...");
+    const payment = await ugfClient.payment.x402.execute({ quote, signer });
     console.log("Vault Payment executed!");
     
     console.log("Sponsoring and executing...");

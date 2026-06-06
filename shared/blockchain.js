@@ -47,8 +47,44 @@ export async function connectWallet() {
   return { address, shortAddress: address.slice(0, 6) + '...' + address.slice(-4) };
 }
 
+async function ensureBaseSepolia() {
+  if (!provider) return;
+  const network = await provider.getNetwork();
+  if (network.chainId !== 84532n) {
+    try {
+      await provider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]);
+      signer = await provider.getSigner();
+      contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+      ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
+    } catch (err) {
+      if (err.code === 4902 || err?.info?.error?.code === 4902 || err?.data?.originalError?.code === 4902) {
+        try {
+          await provider.send('wallet_addEthereumChain', [{
+            chainId: '0x14a34',
+            chainName: 'Base Sepolia Testnet',
+            rpcUrls: ['https://sepolia.base.org'],
+            nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+            blockExplorerUrls: ['https://sepolia.basescan.org']
+          }]);
+          signer = await provider.getSigner();
+          contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+          ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
+          return;
+        } catch (addError) {
+          console.error("Failed to add network", addError);
+          throw new Error("Failed to add Base Sepolia to your wallet. Please add it manually.");
+        }
+      }
+      console.error("Failed to switch network before tx", err);
+      throw new Error("Please manually switch your wallet to Base Sepolia (Chain ID: 84532) and try again.");
+    }
+  }
+}
+
 export async function donate(amount, category) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
+  
+  await ensureBaseSepolia();
   
   if (useUGFFallback) {
     const tx = await signer.sendTransaction({
@@ -96,6 +132,8 @@ export async function computeInvoiceHash(file) {
 export async function recordExpense(amount, category, invoiceHash) {
   if (!ugfClient || !contract) throw new Error("Wallet not connected");
   
+  await ensureBaseSepolia();
+  
   if (useUGFFallback) {
     const tx = await signer.sendTransaction({
       to: CONTRACT_ADDRESS,
@@ -136,6 +174,7 @@ export async function recordExpense(amount, category, invoiceHash) {
 
 export async function flagExpense(expenseId) {
   if (!contract) throw new Error("Wallet not connected");
+  await ensureBaseSepolia();
   // Flagging is not routed via UGF in the instructions, doing direct call
   const tx = await contract.flagExpense(expenseId);
   await tx.wait();
