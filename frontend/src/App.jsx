@@ -215,7 +215,7 @@ function App() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
-            className="fixed bottom-6 right-6 z-[200] bg-black text-white px-6 py-4 border border-white/20 shadow-2xl flex items-center gap-3"
+            className="fixed top-24 right-6 z-[200] bg-black text-white px-6 py-4 border border-white/20 shadow-2xl flex items-center gap-3"
           >
             <AlertTriangle className="w-5 h-5 text-red-400" />
             <p className="text-xs font-bold tracking-widest uppercase">{errorToast}</p>

@@ -181,7 +181,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               </motion.button>
             </div>
 
-            <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-col-reverse md:flex-row items-start md:items-end justify-between gap-8 md:gap-4 mt-8 md:mt-0">
               <motion.div 
                 custom={7} initial="hidden" animate="visible" variants={fadeUp}
                 className="w-[120px] sm:w-[200px] md:w-[320px] shrink-0"
@@ -191,7 +191,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                 </p>
               </motion.div>
 
-              <div className="flex flex-col items-end">
+              <div className="flex flex-col items-start md:items-end w-full">
                 {['IMMUTABLE', 'IMPACT', 'VERIFIED'].map((word, i) => (
                   <div key={word} className="overflow-hidden">
                     <motion.span
@@ -199,7 +199,8 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                       initial="hidden"
                       animate="visible"
                       variants={headingSlideUp}
-                      className="block font-semibold uppercase leading-[0.88] text-right text-[11vw] sm:text-6xl md:text-8xl lg:text-[10rem]"
+                      className="block font-semibold uppercase leading-[0.88] text-left md:text-right w-full"
+                      style={{ fontSize: 'clamp(3rem, 10vw, 8rem)' }}
                     >
                       {word}
                     </motion.span>
