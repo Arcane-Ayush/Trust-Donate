@@ -36,3 +36,15 @@ Because we are committing to a 100% decentralized architecture (no databases), w
 ### Edge Case 3: Spam & Fake NGOs
 - **Problem:** Because blockchains are permissionless, scammers could freely interact with our platform to list fake NGOs (e.g., "Fake Red Cross") in the JSON registry.
 - **Solution:** We will implement an **On-Chain Governance / Curation mechanism**. For an NGO to be added to the official `ngos.json` list, they must either be voted in by a community DAO, or stake a security deposit of tokens that gets slashed if they are caught acting maliciously.
+
+### Edge Case 4: NGO Branding & Naming
+- **Problem:** Currently, the platform acts as a single entity ("TrustDonate"). As we onboard more NGOs, users need to know exactly *who* they are donating to.
+- **Solution:** The `ngos.json` registry will act as a complete profile database. It will map the NGO's contract address to their official Name, Logo URL, and Description, allowing the UI to dynamically render beautiful, distinct profiles for each organization.
+
+### Edge Case 5: Strict Admin UI Gating
+- **Problem:** Right now, the NGO Portal relies on the smart contract's `Ownable` modifier to block unauthorized transactions. However, the UI still allows normal users to *see* the expense forms, which is confusing.
+- **Solution:** We will implement **Strict Role Gating**. The frontend will query `contract.owner()` upon connection. If the connected wallet is not the owner, the NGO Portal will render a strict "403 Unauthorized" screen, completely hiding the admin dashboards from public view.
+
+### Edge Case 6: Preventing "Rich Troll" Spam Flagging
+- **Problem:** If flagging an expense only costs a small gas fee, a malicious actor (or "rich troll") could spam the `Flag Suspicious` button on legitimate expenses to ruin an NGO's reputation.
+- **Solution:** We will implement an **Economic Staking & Slashing** mechanism. To flag an expense, a user must lock up (stake) a deposit (e.g., $50). If a decentralized community DAO investigates and confirms the fraud, the flagger is refunded and rewarded a bounty. However, if the community proves the flagger is a troll (the PDF hash was perfectly valid), the flagger's $50 deposit is **slashed** and donated to the NGO. This game theory makes spam-flagging economically devastating for trolls without ever needing a centralized database.
