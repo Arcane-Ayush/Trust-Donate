@@ -22,6 +22,8 @@ function App() {
     setUGFFallback(newVal);
   };
 
+  const [errorToast, setErrorToast] = useState(null);
+
   const handleConnect = async () => {
     setIsLoading(true);
     try {
@@ -29,6 +31,10 @@ function App() {
       setAddress(data.address);
     } catch (err) {
       console.error(err);
+      if (err.message && err.message.includes('MetaMask is not installed')) {
+        setErrorToast("MetaMask extension not found. Please install it to connect.");
+        setTimeout(() => setErrorToast(null), 4000);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -43,9 +49,9 @@ function App() {
       case 'dashboard':
         return <UserDashboard address={address} />;
       case 'public':
-        return <PublicDashboard />;
+        return <PublicDashboard address={address} />;
       case 'ngo':
-        return <NGODashboard />;
+        return <NGODashboard address={address} />;
       default:
         return <Landing address={address} onConnect={handleConnect} isLoading={isLoading} setPage={setCurrentPage} />;
     }
@@ -201,6 +207,21 @@ function App() {
           </p>
         </footer>
       )}
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {errorToast && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            className="fixed bottom-6 right-6 z-[200] bg-black text-white px-6 py-4 border border-white/20 shadow-2xl flex items-center gap-3"
+          >
+            <AlertTriangle className="w-5 h-5 text-red-400" />
+            <p className="text-xs font-bold tracking-widest uppercase">{errorToast}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

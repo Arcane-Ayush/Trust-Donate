@@ -199,7 +199,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                       initial="hidden"
                       animate="visible"
                       variants={headingSlideUp}
-                      className="block font-semibold uppercase leading-[0.88] text-right text-4xl sm:text-6xl md:text-8xl lg:text-[10rem]"
+                      className="block font-semibold uppercase leading-[0.88] text-right text-[11vw] sm:text-6xl md:text-8xl lg:text-[10rem]"
                     >
                       {word}
                     </motion.span>
