@@ -53,7 +53,7 @@ function App() {
       case 'landing':
         return <Landing address={address} onConnect={handleConnect} isLoading={isLoading} setPage={setCurrentPage} />;
       case 'donate':
-        return <Donate address={address} />;
+        return <Donate address={address} setPage={setCurrentPage} />;
       case 'dashboard':
         return <UserDashboard address={address} setPage={setCurrentPage} />;
       case 'public':

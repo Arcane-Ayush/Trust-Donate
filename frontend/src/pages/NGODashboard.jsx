@@ -10,7 +10,7 @@ const MOCK_EXPENSES = [
   { amount: 3200, category: 'Education', invoiceHash: '0xdef456...', timestamp: Date.now() - 86400000, flagged: true },
 ];
 
-const NGODashboard = () => {
+const NGODashboard = ({ address }) => {
   const [totals, setTotals] = useState({ totalDonated: 0, totalSpent: 0, remaining: 0 });
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ const NGODashboard = () => {
       }
     }
     loadData();
-  }, []);
+  }, [address]);
 
   const handleRecordExpense = async (e) => {
     e.preventDefault();
