@@ -35,10 +35,15 @@ export async function donate(amount, category) {
   // 1. Login to UGF
   await ugfClient.auth.login(signer);
   
+  const address = await signer.getAddress();
+  
   // 2. Get Sponsorship Quote
   const quote = await ugfClient.quote.get({
-    payment_amount: 1, // Mock USD amount
-    payment_to: CONTRACT_ADDRESS
+    payer_address: address,
+    tx_object: JSON.stringify({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('donate', [amount, category])
+    })
   });
   
   // 3. Sponsor Gas and Execute User Tx
@@ -65,10 +70,15 @@ export async function recordExpense(amount, category, invoiceHash) {
   // 1. Login to UGF
   await ugfClient.auth.login(signer);
   
+  const address = await signer.getAddress();
+  
   // 2. Get Sponsorship Quote
   const quote = await ugfClient.quote.get({
-    payment_amount: 1,
-    payment_to: CONTRACT_ADDRESS
+    payer_address: address,
+    tx_object: JSON.stringify({
+      to: CONTRACT_ADDRESS,
+      data: contract.interface.encodeFunctionData('recordExpense', [amount, category, invoiceHash])
+    })
   });
   
   // 3. Sponsor Gas and Execute User Tx
