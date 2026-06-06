@@ -172,12 +172,11 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               </motion.p>
               <motion.button 
                 custom={6} initial="hidden" animate="visible" variants={fadeUp}
-                whileHover={{ x: 4 }}
-                onClick={() => setPage('donate')}
-                className="flex items-center gap-3 text-lg sm:text-2xl md:text-3xl font-semibold tracking-widest uppercase text-[#5E0ED7] whitespace-nowrap"
+                onClick={() => setPage && setPage('donate')}
+                className="group flex items-center gap-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm tracking-[0.2em] uppercase py-4 px-8 rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 transform hover:scale-105"
               >
-                Start Donating
-                <ArrowUpRight className="w-6 h-6 sm:w-8 sm:h-8" />
+                START DONATING
+                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-45" />
               </motion.button>
             </div>
 

@@ -13,7 +13,7 @@ const fadeUp = {
   })
 };
 
-export default function UserDashboard({ address }) {
+export default function UserDashboard({ address, setPage }) {
   const [myDonations, setMyDonations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +49,9 @@ export default function UserDashboard({ address }) {
     );
   }
 
-  const totalDonated = myDonations.reduce((sum, d) => sum + Number(d.amount), 0);
+  const userDonations = myDonations.filter(d => d.donor.toLowerCase() === address.toLowerCase());
+  const otherDonations = myDonations.filter(d => d.donor.toLowerCase() !== address.toLowerCase());
+  const totalDonated = userDonations.reduce((sum, d) => sum + Number(d.amount), 0);
 
   return (
     <div className="max-w-6xl mx-auto mt-12 px-6 pb-24 text-black font-body">
@@ -85,11 +87,33 @@ export default function UserDashboard({ address }) {
             {isLoading ? (
               [1, 2, 3].map(i => <div key={i} className="h-32 bg-zinc-50 animate-pulse border border-zinc-100" />)
             ) : myDonations.length > 0 ? (
-              myDonations.map((d, i) => (
-                <motion.div key={i} custom={i} initial="hidden" animate="visible" variants={fadeUp}>
-                  <DonationCard donation={d} />
-                </motion.div>
-              ))
+              <>
+                {userDonations.length > 0 && (
+                  <div className="space-y-6">
+                    <h3 className="text-sm font-bold tracking-[0.2em] uppercase text-[#5E0ED7]">Your Contributions</h3>
+                    <div className="space-y-4">
+                      {userDonations.map((d, i) => (
+                        <motion.div key={`user-${i}`} custom={i} initial="hidden" animate="visible" variants={fadeUp}>
+                          <DonationCard donation={d} isUser={true} />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {otherDonations.length > 0 && (
+                  <div className="space-y-6 mt-12">
+                    <h3 className="text-sm font-bold tracking-[0.2em] uppercase opacity-40">Community Contributions</h3>
+                    <div className="space-y-4">
+                      {otherDonations.map((d, i) => (
+                        <motion.div key={`other-${i}`} custom={i} initial="hidden" animate="visible" variants={fadeUp}>
+                          <DonationCard donation={d} isUser={false} />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="py-20 border-2 border-dashed border-zinc-100 text-center">
                 <p className="text-[10px] font-bold tracking-widest opacity-20 uppercase italic">NO ON-CHAIN RECORDS FOUND</p>
@@ -107,7 +131,10 @@ export default function UserDashboard({ address }) {
             <p className="text-xs font-semibold tracking-widest leading-relaxed uppercase opacity-80">
               Your contribution is part of the transparent community fund. Every cent is trackable against NGO expenditure reports on-chain.
             </p>
-            <button className="w-full flex items-center justify-between text-lg font-bold tracking-[0.2em] uppercase py-4 border-b border-white/30 hover:border-white transition-colors">
+            <button 
+              onClick={() => setPage && setPage('public')}
+              className="w-full flex items-center justify-between text-lg font-bold tracking-[0.2em] uppercase py-4 border-b border-white/30 hover:border-white transition-colors"
+            >
               Full Audit
               <ArrowUpRight className="w-6 h-6" />
             </button>

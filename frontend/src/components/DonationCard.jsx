@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heart, Calendar, Tag } from 'lucide-react';
 
-export default function DonationCard({ donation }) {
+export default function DonationCard({ donation, isUser }) {
   const date = new Date(donation.timestamp).toLocaleDateString();
 
   return (
@@ -13,7 +13,11 @@ export default function DonationCard({ donation }) {
           </div>
           <div>
             <h3 className="text-3xl font-semibold tracking-tighter tabular-nums text-black">${donation.amount}</h3>
-            <p className="text-[10px] text-black/40 font-bold tracking-widest uppercase truncate max-w-[120px] sm:max-w-xs">{donation.donor}</p>
+            {isUser ? (
+              <p className="text-[10px] text-[#5E0ED7] font-bold tracking-widest uppercase truncate">YOUR CONTRIBUTION</p>
+            ) : (
+              <p className="text-[10px] text-black/40 font-bold tracking-widest uppercase truncate max-w-[120px] sm:max-w-xs">{donation.donor}</p>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">

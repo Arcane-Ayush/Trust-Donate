@@ -55,7 +55,7 @@ function App() {
       case 'donate':
         return <Donate address={address} />;
       case 'dashboard':
-        return <UserDashboard address={address} />;
+        return <UserDashboard address={address} setPage={setCurrentPage} />;
       case 'public':
         return <PublicDashboard address={address} />;
       case 'ngo':
