@@ -176,7 +176,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
               <motion.button
                 custom={6} initial="hidden" animate="visible" variants={fadeUp}
                 onClick={() => setPage && setPage('donate')}
-                className="group flex items-center gap-2 md:gap-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-black text-xs md:text-sm tracking-[0.2em] md:tracking-[0.25em] uppercase py-3 px-5 md:py-4 md:px-8 rounded-xl md:rounded-2xl rounded-tl-none rounded-br-none shadow-[0_0_20px_rgba(94,14,215,0.3)] transition-all duration-300 transform hover:scale-105"
+                className="group flex items-center gap-2 md:gap-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-black text-xs md:text-sm tracking-[0.2em] md:tracking-[0.25em] uppercase py-3 px-5 md:py-4 md:px-8 rounded-tr-xl rounded-bl-xl md:rounded-tr-2xl md:rounded-bl-2xl shadow-[0_0_20px_rgba(94,14,215,0.3)] transition-all duration-300 transform hover:scale-105"
               >
                 START DONATING
                 <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:rotate-45" />
