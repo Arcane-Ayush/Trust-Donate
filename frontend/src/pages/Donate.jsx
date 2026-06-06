@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Send, CheckCircle2, Loader2, ArrowUpRight } from 'lucide-react';
 import { donate } from '@shared/blockchain.js';
+import { AnimatePresence } from 'framer-motion';
+import { AlertTriangle } from 'lucide-react';
 
 const CATEGORIES = ['FOOD', 'EDUCATION', 'HEALTHCARE', 'OTHER'];
 
@@ -19,6 +21,7 @@ export default function Donate({ address }) {
   const [category, setCategory] = useState('FOOD');
   const [isPending, setIsPending] = useState(false);
   const [txHash, setTxHash] = useState(null);
+  const [errorToast, setErrorToast] = useState(null);
 
   const handleDonate = async (e) => {
     e.preventDefault();
@@ -30,7 +33,13 @@ export default function Donate({ address }) {
       setTxHash(hash);
     } catch (err) {
       console.error(err);
-      alert("Donation failed: " + (err.message || err));
+      const msg = err.message || err;
+      if (msg.includes('400') || msg.includes('UGF')) {
+        setErrorToast("UGF Server is currently down. Please click the Bypass Polyfix icon (⚠️) in the top right to continue.");
+      } else {
+        setErrorToast("Donation failed: " + msg);
+      }
+      setTimeout(() => setErrorToast(null), 6000);
     } finally {
       setIsPending(false);
     }
@@ -161,6 +170,21 @@ export default function Donate({ address }) {
           </form>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {errorToast && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            className="fixed top-24 right-6 z-[200] bg-black text-white px-6 py-4 border border-white/20 shadow-2xl flex items-center gap-3 max-w-sm"
+          >
+            <AlertTriangle className="w-6 h-6 text-red-400 shrink-0" />
+            <p className="text-xs font-bold tracking-widest uppercase leading-relaxed">{errorToast}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

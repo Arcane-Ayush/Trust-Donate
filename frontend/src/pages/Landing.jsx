@@ -200,7 +200,7 @@ export default function Landing({ address, onConnect, isLoading, setPage }) {
                       animate="visible"
                       variants={headingSlideUp}
                       className="block font-semibold uppercase leading-[0.88] text-left md:text-right w-full"
-                      style={{ fontSize: 'clamp(3rem, 10vw, 8rem)' }}
+                      style={{ fontSize: 'clamp(2rem, 12vw, 8rem)' }}
                     >
                       {word}
                     </motion.span>

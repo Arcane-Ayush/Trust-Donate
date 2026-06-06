@@ -16,13 +16,21 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [ugfFallback, setUgfFallback] = useState(useUGFFallback);
 
+  const [errorToast, setErrorToast] = useState(null);
+
   const togglePolyfix = () => {
     const newVal = !ugfFallback;
     setUgfFallback(newVal);
     setUGFFallback(newVal);
+    
+    // Show descriptive toast so mobile users understand the purpose of the button
+    if (newVal) {
+      setErrorToast("Polyfix Enabled: Bypassing UGF Server to ensure transactions succeed locally.");
+    } else {
+      setErrorToast("Polyfix Disabled: Re-enabling UGF Gasless Server.");
+    }
+    setTimeout(() => setErrorToast(null), 4000);
   };
-
-  const [errorToast, setErrorToast] = useState(null);
 
   const handleConnect = async () => {
     setIsLoading(true);
