@@ -15,22 +15,26 @@ export function setUGFFallback(val) {
 
 export async function connectWallet() {
   if (!window.ethereum) throw new Error("MetaMask is not installed");
-  provider = new ethers.BrowserProvider(window.ethereum);
-  await provider.send('eth_requestAccounts', []);
   
-  // Force network switch or add to Base Sepolia
+  // Try switching/adding the network natively before doing anything else
   try {
-    await provider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]); // 84532 in hex
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x14a34' }],
+    });
   } catch (switchError) {
     if (switchError.code === 4902 || switchError?.info?.error?.code === 4902 || switchError?.data?.originalError?.code === 4902) {
       try {
-        await provider.send('wallet_addEthereumChain', [{
-          chainId: '0x14a34',
-          chainName: 'Base Sepolia Testnet',
-          rpcUrls: ['https://sepolia.base.org'],
-          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-          blockExplorerUrls: ['https://sepolia.basescan.org']
-        }]);
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0x14a34',
+            chainName: 'Base Sepolia Testnet',
+            rpcUrls: ['https://sepolia.base.org'],
+            nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+            blockExplorerUrls: ['https://sepolia.basescan.org']
+          }]
+        });
       } catch (addError) {
         console.error("Failed to add Base Sepolia:", addError);
       }
@@ -38,6 +42,9 @@ export async function connectWallet() {
       console.error("Please manually switch your MetaMask to Base Sepolia (Chain ID: 84532)");
     }
   }
+
+  provider = new ethers.BrowserProvider(window.ethereum);
+  await provider.send('eth_requestAccounts', []);
 
   signer = await provider.getSigner();
   contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
@@ -52,20 +59,26 @@ async function ensureBaseSepolia() {
   const network = await provider.getNetwork();
   if (network.chainId !== 84532n) {
     try {
-      await provider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]);
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x14a34' }],
+      });
       signer = await provider.getSigner();
       contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
       ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
     } catch (err) {
       if (err.code === 4902 || err?.info?.error?.code === 4902 || err?.data?.originalError?.code === 4902) {
         try {
-          await provider.send('wallet_addEthereumChain', [{
-            chainId: '0x14a34',
-            chainName: 'Base Sepolia Testnet',
-            rpcUrls: ['https://sepolia.base.org'],
-            nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-            blockExplorerUrls: ['https://sepolia.basescan.org']
-          }]);
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: '0x14a34',
+              chainName: 'Base Sepolia Testnet',
+              rpcUrls: ['https://sepolia.base.org'],
+              nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+              blockExplorerUrls: ['https://sepolia.basescan.org']
+            }]
+          });
           signer = await provider.getSigner();
           contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
           ugfClient = new UGFClient({ chainId: CHAIN_ID, signer });
