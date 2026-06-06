@@ -40,8 +40,13 @@ function App() {
     } catch (err) {
       console.error(err);
       if (err.message && err.message.includes('MetaMask is not installed')) {
-        setErrorToast("MetaMask extension not found. Please install it to connect.");
-        setTimeout(() => setErrorToast(null), 4000);
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+          window.location.href = `https://metamask.app.link/dapp/${window.location.host}`;
+        } else {
+          setErrorToast("MetaMask extension not found. Please install it to connect.");
+          setTimeout(() => setErrorToast(null), 4000);
+        }
       }
     } finally {
       setIsLoading(false);
